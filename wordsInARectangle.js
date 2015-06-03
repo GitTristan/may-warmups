@@ -1,44 +1,49 @@
-function stars(number) {
+function repeat(string, numberOfTimes) {
   var result = '';
-  for (var i = 0; i < number; i++) {
-    result += '*'
-  }
+  for (var i = 0; i < numberOfTimes; i++)
+    result += string;
   return result;
 }
 
-console.log(stars(6)); // "******"
-
-function lengthOfLongestWord(words) {
-  return words.reduce(function(prev, curr) {
-    return prev.length > curr.length ? prev : curr;
-  }).length;
+function stars(number) {
+  return repeat('*', number);
 }
 
-console.log(lengthOfLongestWord(['foo', 'bar', 'bazzy'])); // 5
+console.log(stars(6)); // '******'
+
+function lengthOfLongestWord(words) {
+  Math.max.apply(null, words.map(function(word) { return word.length; }));
+  // second solution
+  // return words.reduce(function(prev, curr) {
+  //   return prev.length > curr.length ? prev : curr;
+  // }).length;
+}
+
+console.log(lengthOfLongestWord(['foo', 'bar', 'baszy'])); // 5
 
 function padWord(word, maxWidth) {
   var difference = maxWidth - word.length;
-  var result = "";
-  if (difference > 0) {
-    for (var i = 0; i < difference; i++) {
-      padding += " ";
-    }
-  }
-  return word + padding;
+  return word + repeat(' ', difference);
 }
+
+console.log('"' + padWord('foo', 6) + '"'); // 'foo   '
 
 function printRow(string) {
-  return "* " + string + " *" + '\n';
+  return '* ' + string + ' *' + '\n';
 }
 
-function wordsInARectangle(words) {
-  var result = '';
+console.log(printRow('foo')); // '* foo *\n'
 
+function wordsInARectangle(words) {
   var longestWord = lengthOfLongestWord(words);
+  var longestLine = longestWord + 4;
+  var result = stars(longestLine) + '\n';
 
   words.forEach(function(word, index) {
-
+    result += printRow(padWord(word, longestWord));
   });
+
+  result += stars(longestLine);
 
   return result;
 }
